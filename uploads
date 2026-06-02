@@ -1,0 +1,71 @@
+if uploaded_files:
+
+    all_text = ""
+
+    for file in uploaded_files:
+
+        text = extract_text(file)
+
+        all_text += text
+
+    st.subheader("Extracted Text")
+
+    st.text_area(
+        "Document Content",
+        all_text,
+        height=300
+    )
+
+    # Analyze Evidence Button
+    if st.button("Analyze Evidence"):
+        result = analyze_evidence(all_text)
+        st.subheader("Evidence Analysis")
+        st.write(result)
+
+    # Timeline Button
+    if st.button("Generate Timeline"):
+        timeline = create_timeline(all_text)
+        st.subheader("Timeline")
+        st.write(timeline)
+
+    # Contradiction Button
+    if st.button("Find Contradictions"):
+        contradictions = find_contradictions(all_text)
+        st.subheader("Contradiction Analysis")
+        st.write(contradictions)
+
+    # Final Report Button
+    if st.button("Generate Final Report"):
+        evidence = analyze_evidence(all_text)
+        timeline = create_timeline(all_text)
+        contradictions = find_contradictions(all_text)
+
+        report = generate_report(
+            evidence,
+            timeline,
+            contradictions
+        )
+
+        st.subheader("Final Investigation Report")
+        st.write(report)
+
+    # 👇 ADD THIS PART AT THE END
+    st.subheader("Ask the Detective")
+
+    question = st.text_input(
+        "Ask about the case"
+    )
+
+    if st.button("Ask"):
+
+        answer = analyze_evidence(
+            f"""
+            Case Information:
+            {all_text}
+
+            Question:
+            {question}
+            """
+        )
+
+        st.write(answer)
